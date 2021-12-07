@@ -11,7 +11,7 @@ public class SwingOmok extends JFrame{
 
     ImageIcon bg=new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("board.jpg")));//바둑판 이미지
     ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.jpg")));//흑돌 이미지
-    ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.jpg")));//백돌 이미지
+    ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.png")));//백돌 이미지
 
     static String turn = "black";//현재 순서를 나타내는 문자열
     static boolean turnAlarm = true;// 순서 알림 창의 표시 여부

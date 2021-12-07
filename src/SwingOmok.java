@@ -10,7 +10,7 @@ public class SwingOmok extends JFrame{
     JMenuBar menubar = new JMenuBar();//메뉴를 표시하기 위한 메뉴바
 
     ImageIcon bg=new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("board.jpg")));//바둑판 이미지
-    ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.jpg")));//흑돌 이미지
+    ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.png")));//흑돌 이미지
     ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.png")));//백돌 이미지
 
     static String turn = "black";//현재 순서를 나타내는 문자열
@@ -90,8 +90,8 @@ public class SwingOmok extends JFrame{
                 map[X][Y]=2;//돌의 위치를 저장하는 배열에 돌의 종류 저장
                 stone.setIcon(white);//배치할 돌의 아이콘을 흰돌로 지정
             }
-            stone.setSize(50,50);
-            stone.setLocation(X*52, Y*52);
+            stone.setSize(60,60);
+            stone.setLocation(X*52+5, Y*52+5);
             layer.add(stone,new Integer(100));//돌을 배경 위에 배치
         }
     }

@@ -6,7 +6,6 @@ import java.util.Arrays;
 public class SwingOmok extends JFrame{
     Container c = getContentPane();
     JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
-    JPanel stonePane = new JPanel();//돌을 배치하기 위한 패널
 
     ImageIcon bg=new ImageIcon("img/board.jpg");//바둑판 이미지
     ImageIcon black = new ImageIcon("img/black.jpg");//흑돌 이미지
@@ -21,12 +20,12 @@ public class SwingOmok extends JFrame{
         setTitle("오목");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        setBackground();//배경설정
-        setLayerPane();//계층 팬 설정
-
         setSize(1020, 1050);
         setVisible(true);
         setResizable(false);//이미지 크기에 창을 맞추어놓았으므로 창 크기 변경 불가 설정
+
+        setLayerPane();//c에 레이어 부착
+        setGame();//게임 초기화
     }
 
     public void setBackground(){//배경을 layer에 부착하는 메서드
@@ -52,7 +51,10 @@ public class SwingOmok extends JFrame{
 
     public void setGame(){//게임을 초기화하는 메서드(실행 안 됨)
         for(int i=0;i<19;i++) Arrays.fill(map[i],0);
-        stonePane.removeAll();
+        layer.removeAll();//레이어 초기화
+        setBackground();//레이어에 배경 부착
+        JOptionPane.showMessageDialog(null, "게임을 시작합니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, "흑의 차례입니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
         gameEnd=false;
     }
 
@@ -67,10 +69,9 @@ public class SwingOmok extends JFrame{
                 map[X][Y]=2;//돌의 위치를 저장하는 배열에 돌의 종류 저장
                 stone.setIcon(white);
             }
-            stonePane.add(stone,new Integer(100));//돌을 배경 위에 배치
             stone.setSize(50,50);
             stone.setLocation(X*52, Y*52);
-            layer.add(stone,new Integer(100));
+            layer.add(stone,new Integer(100));//돌을 배경 위에 배치
         }
     }
 
@@ -94,8 +95,10 @@ public class SwingOmok extends JFrame{
             gameEnd=true;
             if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
             else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
-            setGame();//게임을 초기화하는 메서드(실행 안됨)
-            //System.exit(0);//승리가 결정되면 게임 종료
+            int result=0;
+            result=JOptionPane.showConfirmDialog(null,"게임을 다시 시작하겠습니까?", "게임종료", JOptionPane.YES_NO_OPTION);
+            if(result==JOptionPane.YES_OPTION) setGame();//게임을 초기화하는 메서드(실행 안됨)
+            else System.exit(0);//승리가 결정되면 게임 종료
         }
         else{
             if(turn.equals("black")) {

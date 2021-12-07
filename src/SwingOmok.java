@@ -50,8 +50,8 @@ public class SwingOmok extends JFrame{
     }
 
     public void setGame(){
-        Arrays.fill(map[0],0);
-        layer.removeAll();
+        setBackground();
+        setLayerPane();
     }
 
     public void makeStone(int X, int Y){//클릭한 위치에 바둑돌을 배치
@@ -92,22 +92,26 @@ public class SwingOmok extends JFrame{
             gameEnd=true;
             if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
             else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
+            setGame();
+            //System.exit(0);//승리가 결정되면 게임 종료
         }
     }
 
     class ClickListener extends MouseAdapter{
         public void mouseClicked(MouseEvent e) {
             int X=e.getX()-30, Y=e.getY()-30;//바둑판의 안쓰는 부분제거
-            if(X>=0 & Y>=0 & X<=970 & Y<=970 & map[X/50][Y/50]==0){//바둑판의 칸에만 반응하도록 범위 설정 & 돌이 놓이지 않은 곳만 지정 가능
-                makeStone(X/50,Y/50);//바둑판의 칸에 돌을 놓기
-                getResult(X/50, Y/50);//현재 놓은 칸 근처를 탐색
-                if(turn.equals("black")) {
-                    JOptionPane.showMessageDialog(null, "백의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);
-                    turn="white";//한번 진행할때 마다 순서 변경
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "흑의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);
-                    turn="black";
+            if(!gameEnd){
+                if(X>=0 & Y>=0 & X<=970 & Y<=970 & map[X/50][Y/50]==0){//바둑판의 칸에만 반응하도록 범위 설정 & 돌이 놓이지 않은 곳만 지정 가능
+                    makeStone(X/50,Y/50);//바둑판의 칸에 돌을 놓기
+                    getResult(X/50, Y/50);//현재 놓은 칸 근처를 탐색
+                    if(turn.equals("black")) {
+                        JOptionPane.showMessageDialog(null, "백의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);
+                        turn="white";//한번 진행할때 마다 순서 변경
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "흑의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);
+                        turn="black";
+                    }
                 }
             }
         }

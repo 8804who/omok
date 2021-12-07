@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/omok.iml" filepath="$PROJECT_DIR$/omok.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Omok.iml" filepath="$PROJECT_DIR$/Omok.iml" />
     </modules>
   </component>
 </project>

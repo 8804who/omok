@@ -44,7 +44,10 @@ public class SwingOmok extends JFrame{
     }
     class ClickListener extends MouseAdapter{
         public void mouseClicked(MouseEvent e) {
-            System.out.printf("%d, %d\n",e.getX(), e.getY());
+            int X=e.getX(), Y=e.getY();
+            if(X>=25 & Y>=25 & X<=580 & Y<=580){
+                System.out.printf("%d, %d\n",Math.round(X/50),Math.round(Y/50));
+            }
         }
     }
 }

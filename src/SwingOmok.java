@@ -50,8 +50,9 @@ public class SwingOmok extends JFrame{
     }
 
     public void setGame(){
-        setBackground();
-        setLayerPane();
+        for(int i=0;i<19;i++) Arrays.fill(map[i],0);
+        stonePane.removeAll();
+        gameEnd=false;
     }
 
     public void makeStone(int X, int Y){//클릭한 위치에 바둑돌을 배치

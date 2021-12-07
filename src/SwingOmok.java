@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class SwingOmok extends JFrame{
     Container c = getContentPane();
     JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
+    JMenuBar menubar = new JMenuBar();
 
     ImageIcon bg=new ImageIcon("img/board.jpg");//바둑판 이미지
     ImageIcon black = new ImageIcon("img/black.jpg");//흑돌 이미지
@@ -20,12 +21,29 @@ public class SwingOmok extends JFrame{
         setTitle("오목");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        setMenu();
+
         setSize(1020, 1050);
         setVisible(true);
         setResizable(false);//이미지 크기에 창을 맞추어놓았으므로 창 크기 변경 불가 설정
 
         setLayerPane();//c에 레이어 부착
         setGame();//게임 초기화
+    }
+
+    public void setMenu(){
+        JMenu menu=new JMenu("메뉴");
+
+        JMenuItem restart = new JMenuItem("다시하기");
+        JMenuItem close = new JMenuItem("종료하기");
+        restart.addActionListener(new MenuListener());
+        close.addActionListener(new MenuListener());
+
+        menu.add(restart);
+        menu.add(close);
+
+        menubar.add(menu);
+        setJMenuBar(menubar);
     }
 
     public void setBackground(){//배경을 layer에 부착하는 메서드
@@ -49,7 +67,7 @@ public class SwingOmok extends JFrame{
         layer.setLocation(0,0);
     }
 
-    public void setGame(){//게임을 초기화하는 메서드(실행 안 됨)
+    public void setGame(){//게임을 초기화하는 메서드
         for(int i=0;i<19;i++) Arrays.fill(map[i],0);
         layer.removeAll();//레이어 초기화
         setBackground();//레이어에 배경 부착
@@ -96,8 +114,8 @@ public class SwingOmok extends JFrame{
             if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
             else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
             int result=0;
-            result=JOptionPane.showConfirmDialog(null,"게임을 다시 시작하겠습니까?", "게임종료", JOptionPane.YES_NO_OPTION);
-            if(result==JOptionPane.YES_OPTION) setGame();//게임을 초기화하는 메서드(실행 안됨)
+            result=JOptionPane.showConfirmDialog(null,"게임을 다시 시작하시겠습니까?", "게임 종료", JOptionPane.YES_NO_OPTION);
+            if(result==JOptionPane.YES_OPTION) setGame();//게임을 초기화하는 메서드
             else System.exit(0);//승리가 결정되면 게임 종료
         }
         else{
@@ -121,6 +139,14 @@ public class SwingOmok extends JFrame{
                     getResult(X/50, Y/50);//현재 놓은 칸 근처를 탐색
                 }
             }
+        }
+    }
+
+    class MenuListener implements ActionListener{
+        public void actionPerformed(ActionEvent e) {
+            String cmd = e.getActionCommand();
+            if(cmd.equals("다시하기")) setGame();
+            else if(cmd.equals("종료하기")) System.exit(0);
         }
     }
 }

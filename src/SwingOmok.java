@@ -2,15 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class SwingOmok extends JFrame{
     Container c = getContentPane();//메인 패널
     JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
     JMenuBar menubar = new JMenuBar();//메뉴를 표시하기 위한 메뉴바
 
-    ImageIcon bg=new ImageIcon("img/board.jpg");//바둑판 이미지
-    ImageIcon black = new ImageIcon("img/black.jpg");//흑돌 이미지
-    ImageIcon white = new ImageIcon("img/white.jpg");//백돌 이미지
+    ImageIcon bg=new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("board.jpg")));//바둑판 이미지
+    ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.jpg")));//흑돌 이미지
+    ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.jpg")));//백돌 이미지
 
     static String turn = "black";//현재 순서를 나타내는 문자열
     static boolean turnAlarm = true;// 순서 알림 창의 표시 여부

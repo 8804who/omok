@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 public class SwingOmok extends JFrame{
     Container c = getContentPane();
-    JLayeredPane layer = new JLayeredPane();
-    JPanel stonePane = new JPanel();
+    JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
+    JPanel stonePane = new JPanel();//돌을 배치하기 위한 패널
 
     ImageIcon bg=new ImageIcon("img/board.jpg");//바둑판 이미지
     ImageIcon black = new ImageIcon("img/black.jpg");//흑돌 이미지
@@ -28,13 +28,8 @@ public class SwingOmok extends JFrame{
         setVisible(true);
         setResizable(false);//이미지 크기에 창을 맞추어놓았으므로 창 크기 변경 불가 설정
     }
-    public void setLayerPane(){
-        c.add(layer);
-        layer.setSize(1020,1050);
-        layer.setLocation(0,0);
-    }
 
-    public void setBackground(){
+    public void setBackground(){//배경을 layer에 부착하는 메서드
         JPanel back=new JPanel(){
             public void paintComponent(Graphics g){
                 g.drawImage(bg.getImage(),0,0,null);
@@ -49,7 +44,13 @@ public class SwingOmok extends JFrame{
         back.setLocation(0,0);
     }
 
-    public void setGame(){
+    public void setLayerPane(){//layer를 c에 부착하는 메서드
+        c.add(layer);
+        layer.setSize(1020,1050);
+        layer.setLocation(0,0);
+    }
+
+    public void setGame(){//게임을 초기화하는 메서드(실행 안 됨)
         for(int i=0;i<19;i++) Arrays.fill(map[i],0);
         stonePane.removeAll();
         gameEnd=false;
@@ -74,26 +75,26 @@ public class SwingOmok extends JFrame{
     }
 
     public void getResult(int X, int Y){//클릭한 위치를 중심으로 주변을 탐색해서 승리조건에 알맞는지 확인
-        int[] straight_Num=new int[8];
-        for(int i=0;i<8;i++){
-            int count=0;
-            for(int j=1;j<=5;j++){
+        int[] straight_Num=new int[8];//각각 상,하,좌,우,좌상,우하,좌하,우상 탐색값을 저장하는 배열
+        for(int i=0;i<8;i++){//탐색 위치를 바꿔주는 변수 및 반복문
+            int count=0;//탐색 결과를 저장하는 변수
+            for(int j=1;j<=5;j++){//5개까지만 탐색하면 되므로 최대를 5로 지정
                 if(X+move[i][0]*j>0 & Y+move[i][1]*j>0 & X+move[i][0]*j<19 & Y+move[i][1]*j<19){//탐색범위가 맵을 벗어나는것을 방지해주기 위해 범위를 설정
                     if(map[X+(move[i][0])*j][Y+(move[i][1])*j]==map[X][Y]) {//탐색하는 위치에 있는 돌이 자신이 놓은 돌과 같은 돌이면 count++
                         count++;
                     }
                     else break;//탐색하는 위치에 있는 돌이 자신이 놓은 돌과 다르면 그 방향으로는 탐색 종료
                 }
-                else break;
+                else break;//탐색 범위가 맵을 벗어나면 break
             }
-            straight_Num[i]=count;
+            straight_Num[i]=count;//탐색결과를 배열에 저장
         }
 
         if((straight_Num[0]+straight_Num[1]>=4) || (straight_Num[2]+straight_Num[3]>=4)|| (straight_Num[4]+straight_Num[5]>=4)|| (straight_Num[6]+straight_Num[7]>=4)) {//상+하,좌+우,좌상+우하,좌하+우상을 하여서 4이상이 되면 현재 돌과 합쳐서 5
             gameEnd=true;
             if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
             else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
-            setGame();
+            setGame();//게임을 초기화하는 메서드(실행 안됨)
             //System.exit(0);//승리가 결정되면 게임 종료
         }
     }
@@ -111,7 +112,7 @@ public class SwingOmok extends JFrame{
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "흑의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);
-                        turn="black";
+                        turn="black";//한번 진행할때 마다 순서 변경
                     }
                 }
             }

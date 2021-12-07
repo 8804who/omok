@@ -134,7 +134,7 @@ public class SwingOmok extends JFrame{
     class ClickListener extends MouseAdapter{
         public void mouseClicked(MouseEvent e) {//바둑판을 클릭할 때 발동
             int X=(e.getX()-30)/50, Y=(e.getY()-30)/50;//바둑판의 안 쓰는 부분을 제거하고 입력받은 위치를 가져와서 좌표화함
-            if(X>=0 & Y>=0 & X<=19 & Y<=19 & map[X][Y]==0){//바둑판의 칸에만 반응하도록 범위 설정 & 돌이 놓이지 않은 곳만 지정 가능
+            if(X>=0 & Y>=0 & X<19 & Y<19 & map[X][Y]==0){//바둑판의 칸에만 반응하도록 범위 설정 & 돌이 놓이지 않은 곳만 지정 가능
                 makeStone(X,Y);//바둑판의 칸에 돌을 놓기
                 getResult(X,Y);//현재 놓은 칸 근처를 탐색
             }

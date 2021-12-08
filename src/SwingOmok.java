@@ -113,22 +113,29 @@ public class SwingOmok extends JFrame{
         }
 
         if((straight_Num[0]+straight_Num[1]>=4) || (straight_Num[2]+straight_Num[3]>=4)|| (straight_Num[4]+straight_Num[5]>=4)|| (straight_Num[6]+straight_Num[7]>=4)) {//상+하,좌+우,좌상+우하,좌하+우상을 하여서 4이상이 되면 현재 돌과 합쳐서 5개
-            if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
-            else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
-            int result=0;
-            result=JOptionPane.showConfirmDialog(null,"게임을 다시 시작하시겠습니까?", "게임 종료", JOptionPane.YES_NO_OPTION);//게임이 종료되면 새로 게임을 할지 종료할지 여부 확인
-            if(result==JOptionPane.YES_OPTION) setGame();//새로 게임을 할 경우 게임을 초기화하는 메서드
-            else System.exit(0);//새로 게임을 하지않으면 게임 종료
+            engGame();//승리 조건을 채운 경우 현재 게임을 끝낸다
         }
         else{
-            if(turn.equals("black")) {
-                if(turnAlarm) JOptionPane.showMessageDialog(null, "백의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);//알람 표시가 켜져있으면 차례 표시
-                turn="white";//한번 진행할때 마다 순서 변경
-            }
-            else {
-                if(turnAlarm) JOptionPane.showMessageDialog(null, "흑의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);//알람 표시가 켜져있으면 차례 표시
-                turn="black";//한번 진행할때 마다 순서 변경
-            }
+            changeTurn();//승리 조건을 채우지 못 한 경우 차례를 변경
+        }
+    }
+    public void engGame(){//게임이 끝난 경우 승자를 알려주고 게임을 다시 시작할지 물어보는 메서드
+        if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
+        else JOptionPane.showMessageDialog(null, "백의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);
+        int result=0;
+        result=JOptionPane.showConfirmDialog(null,"게임을 다시 시작하시겠습니까?", "게임 종료", JOptionPane.YES_NO_OPTION);//게임이 종료되면 새로 게임을 할지 종료할지 여부 확인
+        if(result==JOptionPane.YES_OPTION) setGame();//새로 게임을 할 경우 게임을 초기화하는 메서드
+        else System.exit(0);//새로 게임을 하지않으면 게임 종료
+    }
+
+    public void changeTurn(){//게임이 계속 진행되는 경우 순서를 바꾸는 메서드
+        if(turn.equals("black")) {
+            if(turnAlarm) JOptionPane.showMessageDialog(null, "백의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);//알람 표시가 켜져있으면 차례 표시
+            turn="white";//한번 진행할때 마다 순서 변경
+        }
+        else {
+            if(turnAlarm) JOptionPane.showMessageDialog(null, "흑의 차례입니다.","차례 변경",JOptionPane.PLAIN_MESSAGE);//알람 표시가 켜져있으면 차례 표시
+            turn="black";//한번 진행할때 마다 순서 변경
         }
     }
 

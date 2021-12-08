@@ -12,21 +12,21 @@ public class SwingOmok extends JFrame{
     private final ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.png")));//흑돌 이미지
     private final ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.png")));//백돌 이미지
 
-    private static String turn = "black";//현재 순서를 나타내는 문자열
-    private static boolean turnAlarm = true;// 순서 알림 창의 표시 여부
+    private String turn = "black";//현재 순서를 나타내는 문자열
+    private boolean turnAlarm = true;// 순서 알림 창의 표시 여부
 
-    private static final int MIN_WIDTH=0;//바둑판의 크기
-    private static final int MIN_HEIGHT=0;//바둑판의 크기
-    private static final int MAX_WIDTH=18;//바둑판의 크기
-    private static final int MAX_HEIGHT=18;//바둑판의 크기
+    private final int MIN_WIDTH=0;//바둑판의 크기
+    private final int MIN_HEIGHT=0;//바둑판의 크기
+    private final int MAX_WIDTH=18;//바둑판의 크기
+    private final int MAX_HEIGHT=18;//바둑판의 크기
 
-    private static final int[][] map = new int[19][19];//바둑돌의 현재 상태를 저장하는 2차원 배열
-    private static final int[][] move={{0,-1},{0,1},{-1,0},{1,0},{-1,1},{1,-1},{-1,-1},{1,1}};//순서대로 상, 하, 좌, 우, 좌상, 우하, 우상, 좌하
-    private static final int NO_STONE=0;//배열에 입력된 값이 0인 경우 그자리에는 돌이 없음
-    private static final int BLACK_STONE=1;//배열에 입력된 값이 1인 경우 그자리에는 흑돌이 있음
-    private static final int WHITE_STONE=2;//배열에 입력된 값이 2인 경우 그자리에는 백돌이 있음
+    private final int[][] map = new int[19][19];//바둑돌의 현재 상태를 저장하는 2차원 배열
+    private final int[][] move={{0,-1},{0,1},{-1,0},{1,0},{-1,1},{1,-1},{-1,-1},{1,1}};//순서대로 상, 하, 좌, 우, 좌상, 우하, 우상, 좌하
+    private final int NO_STONE=0;//배열에 입력된 값이 0인 경우 그자리에는 돌이 없음
+    private final int BLACK_STONE=1;//배열에 입력된 값이 1인 경우 그자리에는 흑돌이 있음
+    private final int WHITE_STONE=2;//배열에 입력된 값이 2인 경우 그자리에는 백돌이 있음
 
-    private static final int STRAIGHT_TO_WIN=5;//승리에 필요한 직선상의 돌 개수
+    private final int STRAIGHT_TO_WIN=5;//승리에 필요한 직선상의 돌 개수
 
     public SwingOmok() {
         setTitle("오목");

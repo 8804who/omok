@@ -56,6 +56,18 @@ public class SwingOmok extends JFrame{
         setJMenuBar(menubar);
     }
 
+    private void setLayerPane(){//layer를 c에 부착하는 메서드
+        c.add(layer);
+        layer.setSize(1020,1060);
+        layer.setLocation(0,0);
+    }
+
+    private void addComponentToLayer(JComponent j, int widthSize, int heightSize, int locationX, int locationY, int priority){//컴포넌트를 layer에 부착하는 메서드
+        layer.add(j, new Integer(priority));
+        j.setSize(widthSize,heightSize);
+        j.setLocation(locationX,locationY);
+    }
+
     private void setBackground(){//배경을 layer에 부착하는 메서드
         JPanel back=new JPanel(){
             public void paintComponent(Graphics g){
@@ -64,15 +76,7 @@ public class SwingOmok extends JFrame{
             }
         };
         back.addMouseListener(new ClickListener());
-        layer.add(back,new Integer(0));//배경을 계층의 가장 아래에 배치
-        back.setSize(1020,1060);
-        back.setLocation(0,0);
-    }
-
-    private void setLayerPane(){//layer를 c에 부착하는 메서드
-        c.add(layer);
-        layer.setSize(1020,1060);
-        layer.setLocation(0,0);
+        addComponentToLayer(back,1020,1060,0,0,0);//배경을 계층의 가장 아래에 배치
     }
 
     private void setGame(){//게임을 초기화하는 메서드
@@ -94,9 +98,7 @@ public class SwingOmok extends JFrame{
             map[X][Y]=WHITE_STONE;//돌의 위치를 저장하는 배열에 돌의 종류 저장
             stone.setIcon(white);//배치할 돌의 아이콘을 흰돌로 지정
         }
-        stone.setSize(60,60);
-        stone.setLocation(X*52+5, Y*52+5);
-        layer.add(stone,new Integer(100));//돌을 배경 위에 배치
+        addComponentToLayer(stone,60,60,X*52+5,Y*52+5,100);//돌을 배경 위에 배치
     }
 
     private void getResult(int X, int Y){//클릭한 위치를 중심으로 주변을 탐색해서 승리조건에 알맞는지 확인
@@ -148,15 +150,15 @@ public class SwingOmok extends JFrame{
 
     class ClickListener extends MouseAdapter{
         public void mouseClicked(MouseEvent e) {//바둑판을 클릭할 때 발동
-            int X=(e.getX()-30)/50, Y=(e.getY()-30)/50;//바둑판의 안 쓰는 부분을 제거하고 입력받은 위치를 가져와서 좌표화함
-            if(X>=MIN_HEIGHT & Y>=MIN_WIDTH & X<=MAX_HEIGHT & Y<=MAX_WIDTH){//바둑판의 칸에만 반응하도록 범위 설정
-                if(map[X][Y]==NO_STONE){//돌이 놓이지 않은 곳만 지정 가능
-                    makeStone(X,Y);//바둑판의 칸에 돌을 놓기
-                    getResult(X,Y);//현재 놓은 칸 근처를 탐색
+            int X=(e.getX()-30)/50, Y=(e.getY()-30)/50;//바둑판의 안 쓰는 부분을 제거하고 좌표화
+                if (X <= MAX_HEIGHT & Y <= MAX_WIDTH) {//바둑판의 칸에만 반응하도록 범위 설정
+                    if (map[X][Y] == NO_STONE) {//돌이 놓이지 않은 곳만 지정 가능
+                        makeStone(X, Y);//바둑판의 칸에 돌을 놓기
+                        getResult(X, Y);//현재 놓은 칸 근처를 탐색
+                    }
                 }
             }
         }
-    }
 
     class MenuListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {

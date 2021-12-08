@@ -102,22 +102,15 @@ public class SwingOmok extends JFrame{
             int count=0;//탐색 결과를 저장하는 변수
             for(int j=1;j<=5;j++){//5개까지만 탐색하면 되므로 최대를 5로 지정
                 if(X+move[i][0]*j>0 & Y+move[i][1]*j>0 & X+move[i][0]*j<19 & Y+move[i][1]*j<19){//탐색범위가 맵을 벗어나는것을 방지해주기 위해 범위를 설정
-                    if(map[X+(move[i][0])*j][Y+(move[i][1])*j]==map[X][Y]) {//탐색하는 위치에 있는 돌이 자신이 놓은 돌과 같은 돌이면 count++
-                        count++;
-                    }
+                    if(map[X+(move[i][0])*j][Y+(move[i][1])*j]==map[X][Y]) count++;//탐색하는 위치에 있는 돌이 자신이 놓은 돌과 같은 돌이면 count++
                     else break;//탐색하는 위치에 있는 돌이 자신이 놓은 돌과 다르면 그 방향으로는 탐색 종료
                 }
                 else break;//탐색 범위가 맵을 벗어나면 break
             }
             straight_Num[i]=count;//탐색결과를 배열에 저장
         }
-
-        if((straight_Num[0]+straight_Num[1]>=4) || (straight_Num[2]+straight_Num[3]>=4)|| (straight_Num[4]+straight_Num[5]>=4)|| (straight_Num[6]+straight_Num[7]>=4)) {//상+하,좌+우,좌상+우하,좌하+우상을 하여서 4이상이 되면 현재 돌과 합쳐서 5개
-            engGame();//승리 조건을 채운 경우 현재 게임을 끝낸다
-        }
-        else{
-            changeTurn();//승리 조건을 채우지 못 한 경우 차례를 변경
-        }
+        if((straight_Num[0]+straight_Num[1]>=4) || (straight_Num[2]+straight_Num[3]>=4)|| (straight_Num[4]+straight_Num[5]>=4)|| (straight_Num[6]+straight_Num[7]>=4)) engGame();//상+하,좌+우,좌상+우하,좌하+우상을 하여서 4이상이 되면 현재 돌과 합쳐서 5개ㄱ
+        else changeTurn();//승리 조건을 채우지 못 한 경우 차례를 변경
     }
     public void engGame(){//게임이 끝난 경우 승자를 알려주고 게임을 다시 시작할지 물어보는 메서드
         if(turn.equals("black")) JOptionPane.showMessageDialog(null, "흑의 승리입니다.","게임 종료",JOptionPane.PLAIN_MESSAGE);

@@ -7,14 +7,13 @@ import java.util.Objects;
 public class SwingOmok extends JFrame{
     private final Container c = getContentPane();//메인 패널
     private final JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
-    private final JPanel stoneLayer = new JPanel();
 
     private final ImageIcon bg=new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("board.jpg")));//바둑판 이미지
     private final ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.png")));//흑돌 이미지
     private final ImageIcon white = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("white.png")));//백돌 이미지
 
-    private String turn = "black";//현재 순서를 나타내는 문자열
-    private boolean turnAlarm = true;// 순서 알림 창의 표시 여부
+    private String turn;//현재 순서를 나타내는 문자열
+    private boolean turnAlarm = true;// 순서 알림 창의 표시 여부(초기값 true)
 
     private final int MIN_WIDTH=0;//바둑판의 크기
     private final int MIN_HEIGHT=0;//바둑판의 크기
@@ -22,7 +21,7 @@ public class SwingOmok extends JFrame{
     private final int MAX_HEIGHT=18;//바둑판의 크기
 
     private final int[][] map = new int[19][19];//바둑돌의 현재 상태를 저장하는 2차원 배열
-    private final int[][] move={{0,-1},{0,1},{-1,0},{1,0},{-1,1},{1,-1},{-1,-1},{1,1}};//순서대로 상, 하, 좌, 우, 좌상, 우하, 우상, 좌하
+    private final int[][] move={{0,-1},{0,1},{-1,0},{1,0},{-1,1},{1,-1},{-1,-1},{1,1}};//탐색방향(상, 하, 좌, 우, 좌상, 우하, 우상, 좌하)
     private final int NO_STONE=0;//배열에 입력된 값이 0인 경우 그자리에는 돌이 없음
     private final int BLACK_STONE=1;//배열에 입력된 값이 1인 경우 그자리에는 흑돌이 있음
     private final int WHITE_STONE=2;//배열에 입력된 값이 2인 경우 그자리에는 백돌이 있음
@@ -93,7 +92,7 @@ public class SwingOmok extends JFrame{
         for (int[] ints : map) Arrays.fill(ints, NO_STONE);//바둑판을 초기화
         layer.removeAll();//레이어 초기화
         setBackground();//레이어에 배경 부착
-        setHitBox();
+        setHitBox();//히트박스 생성
         turn="black";//차례를 흑부터 시작
         JOptionPane.showMessageDialog(null, "게임을 시작합니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
         JOptionPane.showMessageDialog(null, "흑의 차례입니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
@@ -135,7 +134,7 @@ public class SwingOmok extends JFrame{
                 }
                 else break;//탐색 범위가 맵을 벗어나면 break
             }
-            straightCount[i]= count;//탐색결과를 배열에 저장
+            straightCount[i]=count;//탐색결과를 배열에 저장
         }
         return straightCount;//탐색결과를 반환
     }

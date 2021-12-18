@@ -7,6 +7,7 @@ import java.util.Objects;
 public class SwingOmok extends JFrame{
     private final Container c = getContentPane();//메인 패널
     private final JLayeredPane layer = new JLayeredPane();//배경과 돌을 배치하기 위한 계층 패널
+    private final JPanel stoneLayer = new JPanel();
 
     private final ImageIcon bg=new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("board.jpg")));//바둑판 이미지
     private final ImageIcon black = new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("black.png")));//흑돌 이미지
@@ -75,14 +76,24 @@ public class SwingOmok extends JFrame{
                 setOpaque(false);
             }
         };
-        back.addMouseListener(new ClickListener());
         addComponentToLayer(back,1020,1060,0,0,0);//배경을 계층의 가장 아래에 배치
+    }
+
+    private void setHitBox(){//히트박스를 설정하는 메서드
+        for(int i=MIN_HEIGHT;i<=MAX_HEIGHT;i++){//세로줄수만큼 배치
+            for(int j=MIN_WIDTH;j<=MAX_WIDTH;j++) {//가로줄수만큼 배치
+                JLabel hitBox = new JLabel(i+":"+j);//히트박스를 생성하고 세로줄과 가로줄로 텍스트를 지정
+                hitBox.addMouseListener(new ClickListener());//클릭했을때 반응하는 리스너 부착
+                addComponentToLayer(hitBox, 45, 45, i * 52 + 5, j * 52 + 5, 0);//히트박스 배치
+            }
+        }
     }
 
     private void setGame(){//게임을 초기화하는 메서드
         for (int[] ints : map) Arrays.fill(ints, NO_STONE);//바둑판을 초기화
         layer.removeAll();//레이어 초기화
         setBackground();//레이어에 배경 부착
+        setHitBox();
         turn="black";//차례를 흑부터 시작
         JOptionPane.showMessageDialog(null, "게임을 시작합니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
         JOptionPane.showMessageDialog(null, "흑의 차례입니다.","게임 시작",JOptionPane.PLAIN_MESSAGE);
@@ -102,7 +113,7 @@ public class SwingOmok extends JFrame{
     }
 
     private void getResult(int X, int Y){//클릭한 위치를 중심으로 주변을 탐색해서 승리조건에 알맞는지 확인
-        int[] straightCount = searchStone(X,Y);//맵을 탐색해서 결과를 받아옴
+        int[] straightCount = searchMap(X,Y);//맵을 탐색해서 결과를 받아옴
         for(int i=0;i<7;i+=2){//2칸씩 탐색하므로 반복문이 2씩증가
             if(straightCount[i]+straightCount[i+1]>=STRAIGHT_TO_WIN-1) {//상+하,좌+우,좌상+우하,좌하+우상을 하여서 STRAIGHT_TO_WIN-1 이상이 되면 방금 놓은 돌과 합쳐서 승리조건을 채우므로 게임이 종료
                 engGame();//승리 조건을 채운 경우 게임을 종료
@@ -112,7 +123,7 @@ public class SwingOmok extends JFrame{
         changeTurn();//승리 조건을 채우지 못 한 경우 차례를 변경
     }
 
-    private int[] searchStone(int X, int Y){//맵을 탐색하고 탐색 결과를 저장하는 메서드
+    private int[] searchMap(int X, int Y){//맵을 탐색하고 탐색 결과를 반환하는 메서드
         int count;//탐색 결과를 저장하는 변수
         int[] straightCount=new int[8];//각각 상,하,좌,우,좌상,우하,좌하,우상 탐색값을 저장하는 배열
         for(int i=0;i<8;i++){//탐색 위치를 바꿔주는 변수 및 반복문
@@ -149,19 +160,18 @@ public class SwingOmok extends JFrame{
     }
 
     class ClickListener extends MouseAdapter{
-        public void mouseClicked(MouseEvent e) {//바둑판을 클릭할 때 발동
-            int X=(e.getX()-30)/50, Y=(e.getY()-30)/50;//바둑판의 안 쓰는 부분을 제거하고 좌표화
-                if (X>=MIN_HEIGHT & Y>=MIN_WIDTH & X <= MAX_HEIGHT & Y <= MAX_WIDTH) {//바둑판의 칸에만 반응하도록 범위 설정
-                    if (map[X][Y] == NO_STONE) {//돌이 놓이지 않은 곳만 지정 가능
-                        makeStone(X, Y);//바둑판의 칸에 돌을 놓기
-                        getResult(X, Y);//현재 놓은 칸 근처를 탐색
-                    }
-                }
+        public void mouseClicked(MouseEvent e){//히트박스를 클릭했을 때 수행하는 메서드
+            JLabel temp=(JLabel) e.getSource();//클릭한 히트박스를 받아옴
+            String[] temp2=temp.getText().split(":");//히트박스의 세로줄과 가로줄을 받아옴
+            int X=Integer.parseInt(temp2[0]), Y=Integer.parseInt(temp2[1]);//세로줄과 가로줄 지정
+            if (map[X][Y] == NO_STONE) {//돌이 놓이지 않은 곳만 지정 가능
+                makeStone(X, Y);//바둑판의 칸에 돌을 놓기
+                getResult(X, Y);//현재 놓은 칸 근처를 탐색
             }
         }
-
+    }
     class MenuListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {//메뉴버튼을 클릭했을 때 수행하는 메서드
             String cmd = e.getActionCommand();//선택된 버튼의 문자열을 받아옴
             if(cmd.equals("다시하기")) setGame();//다시하기를 누르면 게임을 초기화
             else if(cmd.equals("종료하기")) System.exit(0);//종료하기를 누르면 게임 종료
